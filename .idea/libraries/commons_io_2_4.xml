@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="commons-io-2.4">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/commons-io-2.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jwat-archive-common-1.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jwat-common-1.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jwat-gzip-1.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jwat-warc-1.0.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
