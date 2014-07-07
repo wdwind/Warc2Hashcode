@@ -1,3 +1,7 @@
+
+SET mapred.map.tasks.speculative.execution true;  
+SET mapred.reduce.tasks.speculative.execution true;
+
 data = load '$input' using PigStorage(':');
 dump data;
 
@@ -9,4 +13,17 @@ top = ORDER E BY $1 DESC;
 dump top;
 topn = LIMIT top $n;
 DUMP topn;
+
+r = JOIN data by $0, topn by $0;
+DUMP r;
+
+r1 = foreach r generate $0,$1,$4;
+
+DUMP r1;
+
+result = ORDER r1 BY $2 DESC;
+
+DUMP result;
+
+
 
