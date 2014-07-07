@@ -3,14 +3,10 @@ SET mapred.map.tasks.speculative.execution true;
 SET mapred.reduce.tasks.speculative.execution true;
 
 data = load '$input' using PigStorage(':');
-dump data;
 
 b = group data by $0;
-dump b;
 E = foreach b generate group,COUNT(data);
-dump E;
 top = ORDER E BY $1 DESC;
-dump top;
 topn = LIMIT top $n;
 DUMP topn;
 
