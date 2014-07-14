@@ -5,6 +5,7 @@
 import java.io.*;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.http.client.utils.DateUtils;
 
 import org.jwat.warc.WarcReader;
 import org.jwat.warc.WarcReaderFactory;
@@ -17,6 +18,10 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.net.URLEncoder;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Warc2Hashcodes {
     private String warcFile = "IAH-20080430204825-00000-blackbook.warc";
@@ -98,13 +103,26 @@ public class Warc2Hashcodes {
     private String getHashcode(WarcRecord record){
         InputStream inputStream1 = null;
         inputStream1 = record.getPayload().getInputStream();
+        String finger = produceFingerPrint(inputStream1);
+        String date = record.header.warcDateStr;
 
-        return produceFingerPrint(inputStream1);
+        String lastModified = record.getHttpHeader().getHeader("last-modified").value;
+        if (lastModified != null) {    // in case the header isn't set
+            Date tempD = DateUtils.parseDate(lastModified);
+            DateFormat df = new SimpleDateFormat("MMddyyyy");
+            date = df.format(tempD);
+        }
+
+        //String url = record.header.warcTargetUriUri.getHost() + record.header.warcTargetUriStr;
+        String url = URLEncoder.encode(record.header.warcTargetUriStr);
+        //URLEncoder.encode("asdf", "UTF-8");
+
+        return finger + "|" + date + "|" + url;
     }
 
     private String getHashcode(String file) throws FileNotFoundException {
         File f = new File(file);
-        InputStream inputStream1 = new FileInputStream(f);;
+        InputStream inputStream1 = new FileInputStream(f);
 
         return produceFingerPrint(inputStream1);
     }
@@ -194,7 +212,7 @@ public class Warc2Hashcodes {
                     hashCode.append(ImageHelper.binaryToHex(result));
                 }
 
-                return hashCode.toString();
+                return hashCode.toString() + "|" + source.getHeight() + "|" + source.getWidth();
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -205,7 +223,7 @@ public class Warc2Hashcodes {
 
 
     public static void main(String[] args) {
-        Warc2Hashcodes t1 = new Warc2Hashcodes("IAH-20080430204825-00000-blackbook.warc", true);
+        Warc2Hashcodes t1 = new Warc2Hashcodes("IAH-20080430204825-00000-blackbook.warc", false);
 
         List<String> hcs;
         hcs = t1.getHashcode();
