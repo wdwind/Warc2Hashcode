@@ -1,27 +1,27 @@
 
 SET mapred.map.tasks.speculative.execution true;  
 SET mapred.reduce.tasks.speculative.execution true;
-
+/*load the data with : as seperator*/
 d = load '$input' using PigStorage(':');
- 
+ /*filter the data by time stamp*/
 data = filter d by $2>$threshold;
-
+/*group the data and count the occurrence, fetch the top n entries*/
 b = group data by $0;
 E = foreach b generate group,COUNT(data);
 top = ORDER E BY $1 DESC;
 topn = LIMIT top $n;
 DUMP topn;
-
+/*fetch the complete information of the entries with JOIN*/
 r = JOIN data by $0, topn by $0;
 DUMP r;
 
 r1 = foreach r generate $0,$1,$4;
 
 DUMP r1;
-
+/*order the data in descending order*/
 result = ORDER r1 BY $2 DESC;
 
 DUMP result;
-
+/*store the data into file*/
 store result into '/user/biadmin/processed';
 
