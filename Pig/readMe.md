@@ -5,3 +5,5 @@ pig -param input="/user/biadmin/sampleData" -param n=2 -param threshold=20140601
 ./pig -param input="/user/biadmin/sampleData" -param n=2 -param threshold=20140601 picture
 
 脚本里面store的那一句"/user/biadmin/processed"是输出文件在hadoop文件系统上面的路径，要改成我们的集群上面的路径，里面按从大到小列出哈希码，文件路径和个数，得到这个文件之后把这个文件拷到本地机器用web application读取显示即可
+sampleData/sampleInput/data是输入文件的示例
+sampleData/sampleOutput/data是输出文件的示例，里面每一行各个项以tab键分隔(就是'\t')，读文件的时候以'\t'来tokenize就行
