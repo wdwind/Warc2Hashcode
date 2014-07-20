@@ -4,7 +4,9 @@ SET mapred.reduce.tasks.speculative.execution true;
 /*load data with seperator*/
 d = load '$input' using PigStorage('|');
  /*filter the data by time stamp*/
-data = filter d by $3>$threshold;
+temp = filter d by $3<=$end;
+data = filter temp by $3>=$begin;
+dump data;
 /*count the number of occurrence, choose top n*/
 b = group data by $0;
 E = foreach b generate group,COUNT(data);
