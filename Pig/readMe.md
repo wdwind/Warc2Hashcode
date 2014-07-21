@@ -11,6 +11,9 @@ shell.sh的说明
 picture的说明
 文件picture里面store的那一句"/user/biadmin/processed"是输出文件在hadoop文件系统上面的路径，要改成我们的集群上面的路径，里面按从大到小列出哈希码，文件路径和个数，得到这个文件之后把这个文件拷到本地机器用web application读取显示即可
 
+week.sh
+别问我，我也不知道这个文件在干嘛。
+
 其他说明
 sampleData/sampleInput/data是输入文件的示例
 sampleData/sampleOutput/data是输出文件的示例，里面每一行各个项以tab键分隔(就是'\t')，读文件的时候以'\t'来tokenize就行
