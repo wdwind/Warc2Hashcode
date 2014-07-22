@@ -39,7 +39,7 @@ public class ImTrends extends Configured implements Tool {
 
 		Configuration conf = this.getConf();
 
-		Job job = Job.getInstance(conf, "Extract hrefs");
+		Job job = Job.getInstance(conf, "Image Trends");
 		job.setJarByClass(ImTrends.class);
 
 		FileInputFormat.addInputPath(job, new Path(args[0]));
