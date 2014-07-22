@@ -1,0 +1,29 @@
+kinit naward07
+6ALQ1BPf
+
+
+input:
+/data/public/common-crawl/crawl-data/CC-TEST-2014-10/segments/*/warc/CC-MAIN-20140313024506-00099-ip-10-183-142-35.ec2.internal.warc.gz
+
+yarn jar warcexamples-1.1-fatjar.jar imtrends /data/public/common-crawl/crawl-data/CC-TEST-2014-10/segments/*/warc/CC-MAIN-20140313024506-00099-ip-10-183-142-35.ec2.internal.warc.gz output001
+
+hdfs dfs -ls output001
+
+hdfs dfs -get output001/part-r-00000 .
+
+yarn jar <pathtojar>.jar -Dmapreduce.job.split.metainfo.maxsize=-1 -Dyarn.app.mapreduce.am.resource.mb=12288 -Dyarn.app.mapreduce.am.command-opts=-Xmx8g -Dyarn.app.mapreduce.am.log.level=WARN /data/public/common-crawl/crawl-data/CC-MAIN-2014-10/segments/*/seq/*  <outputpath>
+
+yarn jar warcexamples-1.1-fatjar.jar imtrends -D mapreduce.job.split.metainfo.maxsize=-1 -D yarn.app.mapreduce.am.resource.mb=12288 -D yarn.app.mapreduce.am.command-opts=-Xmx8g /data/public/common-crawl/crawl-data/CC-TEST-2014-10/segments/*/warc/* output005
+
+hdfs://head02.hathi.surfsara.nl:8020/data/public/common-crawl/crawl-data/CC-TEST-2014-10/segments/1394678706211/warc/CC-MAIN-20140313024506-00002-ip-10-183-142-35.ec2.internal.warc.gz
+
+hdfs://head02.hathi.surfsara.nl:8020/data/public/common-crawl/crawl-data/CC-TEST-2014-10/segments/1394678706211/warc/CC-MAIN-20140313024506-00002-ip-10-183-142-35.ec2.internal.warc.gz
+
+hdfs://head02.hathi.surfsara.nl:8020/data/public/common-crawl/crawl-data/CC-TEST-2014-10/segments/1394678706211/warc/CC-MAIN-20140313024506-00002-ip-10-183-142-35.ec2.internal.warc.gz
+
+hdfs://head02.hathi.surfsara.nl:8020/data/public/common-crawl/crawl-data/CC-TEST-2014-10/segments/1394678706211/warc/CC-MAIN-20140313024506-00002-ip-10-183-142-35.ec2.internal.warc.gz
+
+hdfs://head02.hathi.surfsara.nl:8020/data/public/common-crawl/crawl-data/CC-TEST-2014-10/segments/1394678706211/warc/CC-MAIN-20140313024506-00002-ip-10-183-142-35.ec2.internal.warc.gz
+
+
+
