@@ -18,13 +18,11 @@ package nl.surfsara.warcexamples.hadoop.warc;
 import java.io.IOException;
 
 import org.apache.commons.io.IOUtils;
+
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+
 import org.jwat.common.HttpHeader;
 import org.jwat.common.Payload;
 import org.jwat.warc.WarcRecord;
@@ -36,6 +34,8 @@ import org.jwat.warc.WarcRecord;
  * @author mathijs.kattenberg@surfsara.nl
  */
 class ImTrendsExtracter extends Mapper<LongWritable, WarcRecord, Text, Text> {
+	private Text k = new Text();
+	
 	private static enum Counters {
 		CURRENT_RECORD, NUM_HTTP_RESPONSE_RECORDS
 	}
@@ -81,13 +81,18 @@ class ImTrendsExtracter extends Mapper<LongWritable, WarcRecord, Text, Text> {
 	// 		}
 	// 	}
 	// }
+		
+		//Text k = new Text();
 
 		Record2Hashcode r1 = new Record2Hashcode();
 
 		String hc = r1.getHashcode(value);
 		if (!"".equals(hc) && hc != null) {
+			String[] items = hc.split("\\|");//.substring(0, 3);
+			//Text k = new Text(items[4]);
+			k.set(items[4].substring(0, 6));
 			context.getCounter(Counters.NUM_HTTP_RESPONSE_RECORDS).increment(1);
-			context.write(new Text(hc), new Text(""));
+			context.write(k, new Text(hc));
 		}
 	}
 
