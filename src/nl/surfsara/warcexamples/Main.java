@@ -18,7 +18,7 @@ package nl.surfsara.warcexamples;
 import java.util.Arrays;
 
 import nl.surfsara.warcexamples.hadoop.warc.ImTrends;
-import nl.surfsara.warcexamples.hdfs.Headers;
+//import nl.surfsara.warcexamples.hdfs.Headers;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.util.ToolRunner;
@@ -30,7 +30,8 @@ import org.apache.hadoop.util.ToolRunner;
  */
 public class Main {
 	public enum Programs {
-		HEADERS("headers", "Dumps all headers from a file (this is not a mapreduce job)."), IMTRENDS("imtrends", "Extract images' hashcodes from http responses in warc (full crawl output) files.");
+		//HEADERS("headers", "Dumps all headers from a file (this is not a mapreduce job)."), 
+		IMTRENDS("imtrends", "Extract images' hashcodes from http responses in warc (full crawl output) files.");
 
 		private final String name;
 		private final String description;
@@ -61,10 +62,11 @@ public class Main {
 		try {
 			if (Programs.IMTRENDS.getName().equals(tool)) {
 				retval = ToolRunner.run(new Configuration(), new ImTrends(), toolArgs);
-			} else if (Programs.HEADERS.getName().equals(tool)) {
+			} 
+			/*else if (Programs.HEADERS.getName().equals(tool)) {
 				Headers h = new Headers(args[1], args[2]);
 				h.run();
-			}
+			}*/
 			if (showUsage) {
 				showUsage();
 			}
