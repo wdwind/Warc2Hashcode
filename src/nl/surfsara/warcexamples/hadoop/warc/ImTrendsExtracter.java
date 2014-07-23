@@ -18,7 +18,7 @@ import org.jwat.warc.WarcRecord;
  * @author Feng Wang
  */
 class ImTrendsExtracter extends Mapper<LongWritable, WarcRecord, Text, Text> {
-	private Text k = new Text();
+	private Text Key = new Text();
 	
 	private static enum Counters {
 		CURRENT_RECORD, NUM_HTTP_RESPONSE_RECORDS
@@ -34,9 +34,9 @@ class ImTrendsExtracter extends Mapper<LongWritable, WarcRecord, Text, Text> {
 		if (!"".equals(hc) && hc != null) {
 			String[] items = hc.split("\\|");//.substring(0, 3);
 			//Text k = new Text(items[4]);
-			k.set(items[4].substring(0, 6));
+            Key.set(items[4].substring(0, 6) + items[0]);
 			context.getCounter(Counters.NUM_HTTP_RESPONSE_RECORDS).increment(1);
-			context.write(k, new Text(hc));
+			context.write(Key, new Text(hc));
 		}
 	}
 

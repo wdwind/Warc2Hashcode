@@ -12,12 +12,16 @@ class ImTrendsReducer_1 extends Reducer<Text, Text, Text, Text> {
             throws IOException, InterruptedException {
 
         String out = "";
+        int num = 0;
 
         for (Text t : pValues) {
+            num ++;
 
             out += t.toString();
             out += "\t";
         }
+
+        out = num + "\t" + out;
 
         pContext.write(pKey, new Text(out));
     }
