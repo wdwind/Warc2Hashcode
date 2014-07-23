@@ -158,6 +158,10 @@ public class Record2Hashcode {
 
             StringBuffer hashCode2 = new StringBuffer();
             int[] comps2 = new int[(hc2 + "000").length()];
+            for (int i = 0; i < comps2.length; i++)
+            {
+                comps2[i] = Integer.parseInt((hc2 + "000").charAt(i) + "");
+            }
             for (int i = 0; i < comps2.length; i+= 4) {
                 int result = comps2[i] * (int) Math.pow(2, 3) + comps2[i + 1] * (int) Math.pow(2, 2) + comps2[i + 2] * (int) Math.pow(2, 1) + comps2[i + 2];
                 hashCode2.append(ImageHelper.binaryToHex(result));
