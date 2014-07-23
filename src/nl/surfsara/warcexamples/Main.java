@@ -13,21 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+/*
+* Modified by Feng Wang
+* 23.07.2014
+ */
+
 package nl.surfsara.warcexamples;
 
 import java.util.Arrays;
 
 import nl.surfsara.warcexamples.hadoop.warc.ImTrends;
-//import nl.surfsara.warcexamples.hdfs.Headers;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.util.ToolRunner;
 
-/**
- * Main entry point for the warcexamples. 
- * 
- * @author mathijs.kattenberg@surfsara.nl
- */
 public class Main {
 	public enum Programs {
 		//HEADERS("headers", "Dumps all headers from a file (this is not a mapreduce job)."), 
