@@ -25,6 +25,7 @@ public class Record2Hashcode {
     private static final int threshold = 8;
     private static final int maxthresh = 4000;
     private boolean printAndSave = false;
+    private static final int payloadThresh = 1000000;
 
     private String hc = "";
     private WarcRecord record;
@@ -43,7 +44,6 @@ public class Record2Hashcode {
         if (!"".equals(lastModified))
             return finger + "|" + lastModified + "|" + url;
         else return finger + "|" + date + "|" + url;
-
     }
 
     public static String getHashcode(WarcRecord record){
@@ -53,38 +53,19 @@ public class Record2Hashcode {
                 return "";
             }else if(httpHeader.contentType != null && httpHeader.contentType.contains("image")){
                 InputStream inputStream1 = null;
+
+                if (record.getPayload().getTotalLength() > payloadThresh)
+                    return "";
+
                 inputStream1 = record.getPayload().getInputStream();
-                
+
                 String url = record.header.warcTargetUriStr;
                 System.out.println("url: " + url);
-                
+
 //                byte[] b1 = IOUtils.toByteArray(inputStream1);
 //                byte[] encoded = Base64.encodeBase64(b1);
 //                String finger = new String(encoded, "US-ASCII");
                 String finger = produceFingerPrint(inputStream1);
-
-//                if ("".equals(finger))
-//                    return "";
-
-//                Date tempD = record.header.warcDate;
-//                String date = "";
-//
-//                String lastModified = "";//httpHeader.getHeader("last-modified").value;
-//
-//                if (httpHeader != null && httpHeader.getHeader("last-modified") != null)
-//                    lastModified = httpHeader.getHeader("last-modified").value;
-////                PrintWriter out = new PrintWriter("filename.txt");
-////                out.pr
-//                if (lastModified != null) {    // in case the header isn't set
-//                    tempD = DateUtils.parseDate(lastModified);
-//                }
-//
-//                DateFormat df = new SimpleDateFormat("yyyyMMdd");
-//                if (tempD != null)
-//                    date = df.format(tempD);
-//
-//                if ("".equals(date))
-//                    return "";
 
                 String date = "";
                 String lastModified = "";
@@ -110,11 +91,9 @@ public class Record2Hashcode {
 
                 //String url = record.header.warcTargetUriUri.getHost() + record.header.warcTargetUriStr;
                 //String url = URLEncoder.encode(record.header.warcTargetUriStr);
-                
 
                 return checkItems(finger, date, lastModified, url);
 
-                //return finger + "|" + date + "|" + url;
             }else{
                 return "";
             }
@@ -126,7 +105,6 @@ public class Record2Hashcode {
     }
 
     public static String produceFingerPrint(InputStream input) throws Exception{
-//        try {
         BufferedImage source = ImageIO.read(input);
         if (source == null){
             System.out.println("no image");
@@ -139,7 +117,7 @@ public class Record2Hashcode {
                 return "";
             if (source.getHeight() > maxthresh && source.getWidth() > maxthresh)
                 return "";
-            
+
             ImageHelperPHash ihph = new ImageHelperPHash();
             String hc2 = ihph.getHash(source);
 
@@ -165,28 +143,32 @@ public class Record2Hashcode {
                     comps[i] = 0;
                 }
             }
-            
-            String hc = Arrays.toString(comps);
-            hc = hc.replace("[", "");
-            hc = hc.replace("]", "");
-            hc = hc.replace(",", "");
-            hc = hc.replace(" ", "");
 
-//            StringBuffer hashCode = new StringBuffer();
-//            for (int i = 0; i < comps.length; i+= 4) {
-//                int result = comps[i] * (int) Math.pow(2, 3) + comps[i + 1] * (int) Math.pow(2, 2) + comps[i + 2] * (int) Math.pow(2, 1) + comps[i + 2];
-//                hashCode.append(ImageHelper.binaryToHex(result));
-//            }
+//            String hc = Arrays.toString(comps);
+//            hc = hc.replace("[", "");
+//            hc = hc.replace("]", "");
+//            hc = hc.replace(",", "");
+//            hc = hc.replace(" ", "");
 
-            return hc.toString() + "|" + hc2 + "|" + source.getHeight() + "|" + source.getWidth();
-//            }
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
+            StringBuffer hashCode = new StringBuffer();
+            for (int i = 0; i < comps.length; i+= 4) {
+                int result = comps[i] * (int) Math.pow(2, 3) + comps[i + 1] * (int) Math.pow(2, 2) + comps[i + 2] * (int) Math.pow(2, 1) + comps[i + 2];
+                hashCode.append(ImageHelper.binaryToHex(result));
+            }
+
+            StringBuffer hashCode2 = new StringBuffer();
+            int[] comps2 = new int[(hc2 + "000").length()];
+            for (int i = 0; i < comps2.length; i++)
+            {
+                comps2[i] = Integer.parseInt((hc2 + "000").charAt(i) + "");
+            }
+            for (int i = 0; i < comps2.length; i+= 4) {
+                int result = comps2[i] * (int) Math.pow(2, 3) + comps2[i + 1] * (int) Math.pow(2, 2) + comps2[i + 2] * (int) Math.pow(2, 1) + comps2[i + 2];
+                hashCode2.append(ImageHelper.binaryToHex(result));
+            }
+
+            return hashCode.toString() + "|" + hashCode2.toString() + "|" + source.getHeight() + "|" + source.getWidth();
         }
-
-        //return "";
     }
 
 }
-

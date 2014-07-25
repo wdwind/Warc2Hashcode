@@ -15,35 +15,45 @@ class ImTrendsReducer extends Reducer<Text, Text, Text, Text> {
             throws IOException, InterruptedException {
 
         Map<String, ImagesInfo> hm = new HashMap<String, ImagesInfo>();
+        String s;
+        String[] items;
+        ImagesInfo ii;
 
         for (Text t : pValues) {
 
-            String s = t.toString();
-            String[] items = s.split("\\|");
+            s = t.toString();
+            items = s.split("\\|");
 
             //int count = hm.containsKey(items[0]) ? hm.get(items[0]).num : 0;
-            ImagesInfo ii = hm.get(items[0]);
+            ii = hm.get(items[0]);
 
             if (ii == null){
-                hm.put(items[0], new ImagesInfo(pKey.toString()));
-                hm.get(items[0]).updateImagelist(Integer.parseInt(items[2]), Integer.parseInt(items[3]), items[0], items[1], items[5]);
+                hm.put(items[0], new ImagesInfo(pKey.toString(), items[0]));
+                hm.get(items[0]).updateImagelist(Integer.parseInt(items[2]), Integer.parseInt(items[3]), /*items[0],*/ items[1], items[5]);
             }else {
                 //ii.increment(Integer.parseInt(items[2]), Integer.parseInt(items[3]), items[0], items[1], items[4]);
                 ii.increment();
-                ii.updateImagelist(Integer.parseInt(items[2]), Integer.parseInt(items[3]), items[0], items[1], items[5]);
+                ii.updateImagelist(Integer.parseInt(items[2]), Integer.parseInt(items[3]), /*items[0],*/ items[1], items[5]);
             }
         }
 
+        System.out.println("hash map size: " + hm.size());
+
         hm = MapUtil.sortByValue(hm);
 
-        pContext.write(pKey, new Text(map2String(hm)));
+        pContext.write(pKey, new Text(map2String(hm, 100)));
     }
 
-    private String map2String(Map map){
+    private String map2String(Map map, int num){
+        if (num < 0){
+            num = map.size() + 10;
+        }
+
         String out = "";
         Iterator it = map.entrySet().iterator();
 
-        while (it.hasNext()) {
+        int iter = 0;
+        while (it.hasNext() && iter < num) {
             Map.Entry pairs = (Map.Entry)it.next();
             //System.out.println(pairs.getKey() + " = " + pairs.getValue());
             //out += pairs.getKey();
@@ -51,6 +61,7 @@ class ImTrendsReducer extends Reducer<Text, Text, Text, Text> {
             out += pairs.getValue().toString();
             out += "\t";
             it.remove(); // avoids a ConcurrentModificationException
+            iter ++;
         }
 
         return out;

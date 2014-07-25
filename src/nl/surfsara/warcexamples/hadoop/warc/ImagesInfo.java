@@ -15,15 +15,15 @@ public class ImagesInfo implements Comparable<ImagesInfo>{
         private int width;
         private int height;
 
-        private String hash;
+        //private String hash;
         private String pHash;
 
         private String url;
 
-        ImageInfo(int width, int height, String hash, String pHash, String url){
+        ImageInfo(int width, int height, /*String hash,*/ String pHash, String url){
             this.width = width;
             this.height = height;
-            this.hash = hash;
+            //this.hash = hash;
             this.pHash = pHash;
             this.url = url;
         }
@@ -48,57 +48,19 @@ public class ImagesInfo implements Comparable<ImagesInfo>{
     private int num = 1;
     private List<ImageInfo> imageList = new ArrayList<ImageInfo>();
     private String month;
+    private String hash;
 
-    ImagesInfo(String month){
+    ImagesInfo(String month, String hash){
         this.month = month;
+        this.hash = hash;
     }
 
     public void increment () { ++num;}
     public int get(){return num;}
 
-//    public void increment(int width, int height, String hash, String pHash, String url){
-//        increment();
-//        imageList.add(new ImageInfo(width, height, hash, pHash, url));
-//    }
-
-    public void updateImagelist(int width, int height, String hash, String pHash, String url){
-        imageList.add(new ImageInfo(width, height, hash, pHash, url));
+    public void updateImagelist(int width, int height, /*String hash,*/ String pHash, String url){
+        imageList.add(new ImageInfo(width, height, /*hash,*/ pHash, url));
     }
-
-//    @Override
-//    public String toString(){
-//        StringBuilder result = new StringBuilder();
-//        String newLine = System.getProperty("line.separator");
-//
-//        Field[] fields = this.getClass().getDeclaredFields();
-//
-//        for (Field field : fields) {
-//            result.append("  ");
-//            try {
-//                result.append(field.getName());
-//                result.append(": ");
-//                if (!"imageList".equals(field.getName()))
-//                    //requires access to private field:
-//                    result.append(field.get(this));
-//            }
-//            catch (IllegalAccessException ex) {
-//                System.out.println(ex);
-//            }
-//            result.append(newLine);
-//        }
-//
-//        StringBuilder sb = new StringBuilder();
-//
-//        for(ImageInfo ii : imageList)
-//        {
-//            sb.append(ii.toString());
-//            sb.append("\t");
-//        }
-//        result.append(sb.toString());
-//        result.append(newLine);
-//
-//        return result.toString();
-//    }
 
     @Override
     public int compareTo(ImagesInfo iThat){
@@ -112,7 +74,7 @@ public class ImagesInfo implements Comparable<ImagesInfo>{
     }
 
     public static void main(String[] args){
-        ImagesInfo ii = new ImagesInfo("test1");
+        ImagesInfo ii = new ImagesInfo("test1", "asd");
 
 //        ii.increment(1,2,"1","2","t");
 //        ii.increment(4,5, "a","b","c");
