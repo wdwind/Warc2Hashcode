@@ -46,7 +46,7 @@ public class ImTrends extends Configured implements Tool {
 		FileOutputFormat.setOutputPath(job, new Path(args[1]));
 
 		job.setMapperClass(ImTrendsExtracter.class);
-		job.setReducerClass(ImTrendsReducer.class);
+		job.setReducerClass(Reducer.class);
 		job.setInputFormatClass(WarcInputFormat.class);
 		job.setOutputKeyClass(Text.class);
 		job.setOutputValueClass(Text.class);

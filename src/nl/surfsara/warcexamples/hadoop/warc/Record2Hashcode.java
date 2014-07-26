@@ -10,6 +10,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.http.client.utils.DateUtils;
 import org.apache.commons.codec.binary.Base64;
 
+import org.jwat.common.HeaderLine;
 import org.jwat.warc.WarcRecord;
 import org.jwat.common.HttpHeader;
 
@@ -20,15 +21,12 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Arrays;
+import java.util.List;
 
 public class Record2Hashcode {
-    private static final int threshold = 8;
-    private static final int maxthresh = 4000;
-    private boolean printAndSave = false;
-    private static final int payloadThresh = 1000000;
-
-    private String hc = "";
-    private WarcRecord record;
+    private static final int sizeThresholdMin = 8;
+    private static final int sizeThresholdMax = 4000;
+    private static final int payloadThreshold = 1000000;
 
     Record2Hashcode(){}
 
@@ -54,7 +52,7 @@ public class Record2Hashcode {
             }else if(httpHeader.contentType != null && httpHeader.contentType.contains("image")){
                 InputStream inputStream1 = null;
 
-                if (record.getPayload().getTotalLength() > payloadThresh)
+                if (record.getPayload().getTotalLength() > payloadThreshold)
                     return "";
 
                 inputStream1 = record.getPayload().getInputStream();
@@ -72,22 +70,30 @@ public class Record2Hashcode {
                 DateFormat df = new SimpleDateFormat("yyyyMMdd");
 
                 try{
-                    lastModified = httpHeader.getHeader("last-modified").value;
+                    lastModified = httpHeader.getHeader("Last-Modified").value;
                     Date tempD1 = DateUtils.parseDate(lastModified);
                     lastModified = df.format(tempD1);
+
+                    System.out.println();
+                    System.out.println("last: " + lastModified);
                 }
                 catch (Exception e){
-
+                    System.out.println();
+                    System.out.println("header:");
+                    List<HeaderLine> l = httpHeader.getHeaderList();
+                    for (HeaderLine temp : l){
+                        System.out.println("   " + temp.toString() + " " + temp.name + " " + temp.value);
+                    }
                 }
 
-                try{
-                    date = httpHeader.getHeader("Date").value;
-                    Date tempD2 = DateUtils.parseDate(date);
-                    date = df.format(tempD2);
-                }
-                catch (Exception e){
-
-                }
+//                try{
+//                    date = httpHeader.getHeader("Date").value;
+//                    Date tempD2 = DateUtils.parseDate(date);
+//                    date = df.format(tempD2);
+//                }
+//                catch (Exception e){
+//
+//                }
 
                 //String url = record.header.warcTargetUriUri.getHost() + record.header.warcTargetUriStr;
                 //String url = URLEncoder.encode(record.header.warcTargetUriStr);
@@ -113,9 +119,9 @@ public class Record2Hashcode {
             System.out.println("image exist, height:" + source.getHeight());
             System.out.println("image exist, width:" + source.getWidth());
 
-            if (source.getHeight() < threshold || source.getWidth() < threshold)
+            if (source.getHeight() < sizeThresholdMin || source.getWidth() < sizeThresholdMin)
                 return "";
-            if (source.getHeight() > maxthresh && source.getWidth() > maxthresh)
+            if (source.getHeight() > sizeThresholdMax && source.getWidth() > sizeThresholdMax)
                 return "";
 
             ImageHelperPHash ihph = new ImageHelperPHash();
