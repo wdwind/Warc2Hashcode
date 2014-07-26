@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="src" path="/Warc2Hashcodes/src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/commons-io-2.4"/>
-	<classpathentry kind="output" path="/out/production/Warc2Hashcodes"/>
-</classpath>
