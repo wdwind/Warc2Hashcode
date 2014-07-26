@@ -27,3 +27,16 @@ hdfs://head02.hathi.surfsara.nl:8020/data/public/common-crawl/crawl-data/CC-TEST
 
 
 
+
+
+<property>
+  <name>mapred.task.timeout</name>
+  <value>3600000</value> <!-- 30 minutes -->
+</property>
+
+
+yarn jar warcexamples-1.1-fatjar.jar imtrends -D mapreduce.job.split.metainfo.maxsize=-1 -D yarn.app.mapreduce.am.resource.mb=12288 -D yarn.app.mapreduce.am.command-opts=-Xmx4g -D mapred.child.java.opts=-Xmx4G -D mapreduce.job.reduces=4 -D mapreduce.map.log.level=WARN -D mapreduce.reduce.log.level=WARN -D mapreduce.task.timeout=7200000 -D mapreduce.job.reduce.slowstart.completedmaps=0.95 /data/public/common-crawl/crawl-data/CC-MAIN-2014-10/segments/1394678706211/warc/* main_output015
+
+
+
+
