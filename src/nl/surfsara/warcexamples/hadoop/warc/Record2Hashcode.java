@@ -86,6 +86,13 @@ public class Record2Hashcode {
                     }
                 }
 
+                if (!lastModified.matches("[0-9]*")){
+                    int ind = lastModified.lastIndexOf(" ");
+                    lastModified = lastModified.substring(0, ind) + " GMT";
+                    Date tempD1 = DateUtils.parseDate(lastModified);
+                    lastModified = df.format(tempD1);
+                }
+
 //                try{
 //                    date = httpHeader.getHeader("Date").value;
 //                    Date tempD2 = DateUtils.parseDate(date);
