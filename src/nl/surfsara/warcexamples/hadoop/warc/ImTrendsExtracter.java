@@ -43,12 +43,10 @@ class ImTrendsExtracter extends Mapper<LongWritable, WarcRecord, Text, Text> {
 	@Override
 	public void map(LongWritable key, WarcRecord value, Context context) throws IOException, InterruptedException {
 		context.setStatus(Counters.CURRENT_RECORD + ": " + key.get());
-		
-		//Text k = new Text();
 
-		Record2Hashcode r1 = new Record2Hashcode();
+		//Record2Hashcode r1 = new Record2Hashcode();
 
-		String hc = r1.getHashcode(value);
+		String hc = Record2Hashcode.getHashcode(value);
 		if (!"".equals(hc) && hc != null) {
 			String[] items = hc.split("\\|");//.substring(0, 3);
 			//Text k = new Text(items[4]);
