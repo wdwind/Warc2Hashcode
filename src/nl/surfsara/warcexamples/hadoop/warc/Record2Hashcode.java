@@ -74,16 +74,16 @@ public class Record2Hashcode {
                     Date tempD1 = DateUtils.parseDate(lastModified);
                     lastModified = df.format(tempD1);
 
-                    System.out.println();
-                    System.out.println("last: " + lastModified);
+//                    System.out.println();
+//                    System.out.println("last: " + lastModified);
                 }
                 catch (Exception e){
-                    System.out.println();
-                    System.out.println("header:");
-                    List<HeaderLine> l = httpHeader.getHeaderList();
-                    for (HeaderLine temp : l){
-                        System.out.println("   " + temp.toString() + " " + temp.name + " " + temp.value);
-                    }
+//                    System.out.println();
+//                    System.out.println("header:");
+//                    List<HeaderLine> l = httpHeader.getHeaderList();
+//                    for (HeaderLine temp : l){
+//                        System.out.println("   " + temp.toString() + " " + temp.name + " " + temp.value);
+//                    }
                 }
 
                 if (!lastModified.matches("[0-9]*")){
