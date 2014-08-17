@@ -1,5 +1,19 @@
+dt = load '/user/biadmin/sampleData' using PigStorage('\t') AS (period:int,Hash:chararray);
+/*dump dt;*/
+tt = foreach dt{
+str = STRSPLIT($1,'\\|');
+generate $0,FLATTEN(str);
+};
+/*dump tt;*/
+
+d = foreach tt{
+generate  $0 AS period,$1 AS Hash,$2 AS pHash,$3 AS height,$4 AS width,$5 AS time,$6 AS url;
+};
+DESCRIBE d;
 /*load the data*/
+/*
 d = load '$input' using PigStorage('|') AS (period:int,Hash:chararray,pHash:chararray,height:int,width:int,time:chararray,url:chararray); 
+*/
 /*DUMP d;*/
 
 /*count the occurrence of each pattern in each period*/
