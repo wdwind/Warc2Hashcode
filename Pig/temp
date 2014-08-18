@@ -1,5 +1,5 @@
-dt = load '/user/biadmin/sampleData' using PigStorage('\t') AS (period:int,Hash:chararray);
-/*dump dt;*/
+dt = load '/user/naward07/main_output019' using PigStorage('\t') AS (period:int,Hash:chararray);
+dump dt;
 tt = foreach dt{
 str = STRSPLIT($1,'\\|');
 generate $0,FLATTEN(str);
@@ -50,4 +50,4 @@ result = ORDER preorder BY period DESC,count DESC;
 DUMP result;
 
 /*store the results*/
-store result into '/user/biadmin/pr';
+store result into '/user/naward07/re';
