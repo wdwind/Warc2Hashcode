@@ -6,6 +6,7 @@ period和Hash之间用tab分隔，后面的column之间用|分隔
 
 输出文件格式：
 count period Hash pHash height width time url
+
 column之间用tab分隔
 
 
